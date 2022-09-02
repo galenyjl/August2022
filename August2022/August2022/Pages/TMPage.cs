@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using August2022.Utilities;
+using NUnit.Framework;
 using OpenQA.Selenium;
 using System;
 using System.Collections.Generic;
@@ -58,7 +59,7 @@ namespace August2022.Pages
 
         public void EditTM(IWebDriver driver)
         {
-            Thread.Sleep(2500);
+            WaitHelpers.WaitToBeVisible(driver, "XPath", "//*[@id='tmsGrid']/div[3]/table/tbody/tr[1]/td[1]", 3);
             // Go to the last page where edited record will be
             IWebElement goToLastPageButton = driver.FindElement(By.XPath("//*[@id='tmsGrid']/div[4]/a[4]/span"));
             goToLastPageButton.Click();
@@ -110,7 +111,7 @@ namespace August2022.Pages
             // Click on "Save" button
             IWebElement saveButton1 = driver.FindElement(By.Id("SaveButton"));
             saveButton1.Click();
-            Thread.Sleep(3000);
+            WaitHelpers.WaitToBeVisible(driver, "XPath", "//*[@id='tmsGrid']/div[3]/table/tbody/tr[1]/td[1]", 3);
 
             // Assert that Time record has been edited.
             IWebElement goToLastPageBtn1 = driver.FindElement(By.XPath("//*[@id='tmsGrid']/div[4]/a[4]/span"));
@@ -131,7 +132,7 @@ namespace August2022.Pages
 
         public void DeleteTM(IWebDriver driver)
         {
-            Thread.Sleep(1500);
+            WaitHelpers.WaitToBeVisible(driver, "XPath", "//*[@id='tmsGrid']/div[3]/table/tbody/tr[1]/td[1]", 3);
             // Go to the last page where edited record will be
             IWebElement goToLastPageButton = driver.FindElement(By.XPath("//*[@id='tmsGrid']/div[4]/a[4]/span"));
             goToLastPageButton.Click();
@@ -155,6 +156,10 @@ namespace August2022.Pages
             {
                 Assert.Fail("Record to be deleted hasn't been found. Record not deleted.");
             }
+
+            // Assert that Time record has been deleted
+            driver.Navigate().Refresh();
+            WaitHelpers.WaitToBeVisible(driver, "XPath", "//*[@id='tmsGrid']/div[3]/table/tbody/tr[1]/td[1]", 3);
 
             // Assert that Time record has been deleted.
             IWebElement goToLastPageBtn1 = driver.FindElement(By.XPath("//*[@id='tmsGrid']/div[4]/a[4]/span"));

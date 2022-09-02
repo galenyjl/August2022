@@ -14,15 +14,22 @@ namespace August2022.Utilities
     {
         public IWebDriver driver;
 
-        [SetUp]
+        LoginPage loginPageObj = new LoginPage();
+
+        [OneTimeSetUp]
         public void LoginActions()
         {
             // open chrome browser
             driver = new ChromeDriver();
 
             // Login page object initialization and definition
-            LoginPage loginPageObj = new LoginPage();
             loginPageObj.LoginSteps(driver);
+        }
+
+        [OneTimeTearDown]
+        public void CloseTestRun()
+        {
+            driver.Quit();
         }
     }
 }
