@@ -47,17 +47,27 @@ namespace August2022.Pages
             IWebElement goToLastPageButton = driver.FindElement(By.XPath("//*[@id='tmsGrid']/div[4]/a[4]/span"));
             goToLastPageButton.Click();
             Thread.Sleep(1000);
-
-            IWebElement newCode = driver.FindElement(By.XPath("//*[@id='tmsGrid']/div[3]/table/tbody/tr[last()]/td[1]"));
-            IWebElement newDescription = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[3]"));
-            IWebElement newPrice = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[4]"));
-
-            Assert.That(newCode.Text == "August2022", "Actual code and expected code do not match");
-            Assert.That(newDescription.Text == "August2022", "Actual description and expected description do not match");
-            Assert.That(newPrice.Text == "$12.00", "Actual price and expected price do not match");
         }
 
-        public void EditTM(IWebDriver driver)
+        public string GetCode(IWebDriver driver)
+        {
+            IWebElement newCode = driver.FindElement(By.XPath("//*[@id='tmsGrid']/div[3]/table/tbody/tr[last()]/td[1]"));
+            return newCode.Text;
+        }
+
+        public string GetDescription(IWebDriver driver)
+        {
+            IWebElement newDescription = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[3]"));
+            return newDescription.Text;
+        }
+
+        public string GetPrice(IWebDriver driver)
+        {
+            IWebElement newPrice = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[4]"));
+            return newPrice.Text;
+        }
+
+        public void EditTM(IWebDriver driver, string description)
         {
             WaitHelpers.WaitToBeVisible(driver, "XPath", "//*[@id='tmsGrid']/div[3]/table/tbody/tr[1]/td[1]", 3);
             // Go to the last page where edited record will be
@@ -89,7 +99,7 @@ namespace August2022.Pages
             // Click on "Description" from Textbox and set the description
             IWebElement descriptionTextBox1 = driver.FindElement(By.Id("Description"));
             descriptionTextBox1.Clear();
-            descriptionTextBox1.SendKeys("Updated");
+            descriptionTextBox1.SendKeys(description);
             
 
             // Click on "Price per unit" textbox and clear the price
@@ -119,15 +129,20 @@ namespace August2022.Pages
             Thread.Sleep(1500);
 
             IWebElement editedCode = driver.FindElement(By.XPath("//*[@id='tmsGrid']/div[3]/table/tbody/tr[last()]/td[1]"));
-            IWebElement editedDescription = driver.FindElement(By.XPath("//*[@id='tmsGrid']/div[3]/table/tbody/tr[last()]/td[3]"));
             IWebElement editedPrice = driver.FindElement(By.XPath("//*[@id='tmsGrid']/div[3]/table/tbody/tr[last()]/td[4]"));
 
             // Assertion
             Assert.That(editedCode.Text == "Updated", "Actual Code and expected code do not match.");
-            Assert.That(editedDescription.Text == "Updated", "Actual Description and expected description do not match.");
+            //Assert.That(editedDescription.Text == "Updated", "Actual Description and expected description do not match.");
             Assert.That(editedPrice.Text == "$170.00", "Actual Price and expected price do not match.");
 
 
+        }
+
+        public string GetEditedDescription(IWebDriver driver)
+        {
+            IWebElement editedDescription = driver.FindElement(By.XPath("//*[@id='tmsGrid']/div[3]/table/tbody/tr[last()]/td[3]"));
+            return editedDescription.Text;
         }
 
         public void DeleteTM(IWebDriver driver)
