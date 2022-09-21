@@ -78,6 +78,18 @@ namespace August2022.Pages
 
             IWebElement findRecordCreated = driver.FindElement(By.XPath("//*[@id='tmsGrid']/div[3]/table/tbody/tr[last()]/td[1]"));
 
+            if (findRecordCreated.Text == "August2022")
+            {
+                // Click on the Edit Button
+                IWebElement editButton = driver.FindElement(By.XPath("//*[@id='tmsGrid']/div[3]/table/tbody/tr[last()]/td[5]/a[1]"));
+                editButton.Click();
+                Thread.Sleep(2000);
+            }
+            else
+            {
+                Assert.Fail("Record to be edited hasn't been found. Record not edited.");
+            }
+
             // Click on "Code" from Textbox and set the code
             IWebElement codeTextBox1 = driver.FindElement(By.Id("Code"));
             codeTextBox1.Clear();
